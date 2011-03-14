@@ -1,4 +1,4 @@
-#define DEBUG
+//#define DEBUG
 #include <cstdio>
 #include <vector>
 #include <gtest/gtest.h>
@@ -40,55 +40,41 @@ TEST(tarjan, SCC_testing) {
 TEST(SAT, simple_test) {
   // (a || b) && (b || !c)
   SAT sat(3);
-  std::vector <bool> data(4);
-  data[0] = 0;
-  data[1] = 1;
-  data[2] = 1;
-  data[3] = 1;
-  sat.addFormula(0, 1, data);
-  data[0] = 1;
-  data[1] = 0;
-  data[2] = 1;
-  data[3] = 1;
-  sat.addFormula(1, 2, data);
+  sat.addFormula(0, 1, "0111");
+  sat.addFormula(1, 2, "1011");
 
   std::vector<bool> solution;
   bool result = sat.solve(solution);
   EXPECT_EQ(true, result);
 
+#ifdef DEBUG
   fprintf(stderr, "solution:\n");
   for (int i = 0; i < 3; i++)
     fprintf(stderr, "%d - %d\n", i, (int)solution[i]);
+#endif
 
   EXPECT_EQ(true, sat.check(solution));
 }
 
 TEST(SAT, simple_test2) {
   SAT sat(3);
-  std::vector <bool> data(4);
-  data[0] = 0;
-  data[1] = 1;
-  data[2] = 1;
-  data[3] = 1;
-  sat.addFormula(0, 1, data);
-  data[0] = 0;
-  data[1] = 1;
-  data[2] = 0;
-  data[3] = 0;
-  sat.addFormula(1, 2, data);
+  sat.addFormula(0, 1, "0111");
+  sat.addFormula(1, 2, "0100");
 
   std::vector<bool> solution;
   bool result = sat.solve(solution);
   EXPECT_EQ(true, result);
 
+#ifdef DEBUG
   fprintf(stderr, "solution:\n");
   for (int i = 0; i < 3; i++)
     fprintf(stderr, "%d - %d\n", i, (int)solution[i]);
+#endif
 
   EXPECT_EQ(true, sat.check(solution));
 }
 
-TEST(SAT, DISABLED_large_random) {
+TEST(SAT, large_random) {
   int n = 10000;
   int m = 100000;
   std::vector<bool> solution(n);
@@ -114,5 +100,16 @@ TEST(SAT, DISABLED_large_random) {
 
   EXPECT_EQ(true, result);
   EXPECT_EQ(true, sat.check(ans));
+}
+
+TEST(SAT, contradiction) {
+  SAT sat(3);
+  sat.addFormula(0, 1, "0111");
+  sat.addFormula(1, 2, "0000");
+
+  std::vector<bool> solution;
+  bool result = sat.solve(solution);
+  EXPECT_EQ(false, result);
+  EXPECT_EQ(true, solution.empty());
 }
 
