@@ -1,0 +1,9 @@
+n m
+n - vars
+m - formulas
+
+a1 a2 a3 a4
+...
+m lines
+
+
