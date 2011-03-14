@@ -7,4 +7,4 @@ OUTDIR=bin/
 
 all: 2sat
 2sat: 2sat/sat_test.cpp
-	$(CC) $(CC_FLAGS) $< -o $(OUTDIR)$@.out
+	$(CC) $(CC_FLAGS) $< -o $(OUTDIR)$@.bin
