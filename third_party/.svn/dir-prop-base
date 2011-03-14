@@ -1,6 +1,0 @@
-K 13
-svn:externals
-V 60
-googletest -r494	http://googletest.googlecode.com/svn/trunk
-
-END
